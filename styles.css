@@ -20,3 +20,7 @@ body{
     height: 20px;
     border:solid .5px;
 }
+.form{
+    display: grid;
+    grid-template-rows: 1fr, 1fr;
+}

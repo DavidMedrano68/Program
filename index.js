@@ -1,4 +1,5 @@
 const grid = document.querySelector('.grid')
+const form = document.querySelector('form')
 console.log('hello')
 function createCell(x,y,status){
     const cell = document.createElement('div')
@@ -11,6 +12,7 @@ function createCell(x,y,status){
 function findCell(y,x){
     let found = document.querySelector(`[data-y="${y}"][data-x="${x}"]`)
     found.classList = 'ship'
+    found.style.backgroundColor = 'red'
 }
 let x = 0
     let y = 9
@@ -28,3 +30,9 @@ for(let i = 0; i < 100; i++){
    
 }
 findCell(3,3)
+findCell(3,4)
+findCell(3,5)
+
+
+
+
