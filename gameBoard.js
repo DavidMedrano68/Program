@@ -24,12 +24,18 @@ export default class GameBoard {
     return [desiredY, desiredX + iteration];
   }
   placeShips(ship, desiredX, desiredY) {
+    let shipCoords = [];
     const available = this.available(ship.length, desiredX, desiredY);
     if (available) {
       for (let i = 0; i < ship.length; i++) {
         const [y, x] = this.coords(desiredX, desiredY, i);
         this.board[y][x] = { ship };
+        this.placeShips.push([y][x]);
+        shipCoords.push([y][x]);
       }
+      return shipCoords;
+    } else {
+      return false;
     }
   }
   recieveAttack(y, x) {
