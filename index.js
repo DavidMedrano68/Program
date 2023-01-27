@@ -2,8 +2,13 @@ import GameBoard from "./gameBoard.js";
 import { ship } from "./ship.js";
 const grid = document.querySelector(".grid");
 const form = document.querySelector("form");
-const formX = document.querySelector(".formX").value;
-const formY = document.querySelector(".formY").value;
+const formXval = document.querySelector(".formX").value;
+const formYval = document.querySelector(".formY").value;
+const formX = document.querySelector("formX");
+const formY = document.querySelector("formY");
+const gameBoard = new GameBoard();
+const shipArray = [];
+const shipLengths = [1, 1, 2, 4, 3];
 const hasProto = () => {
   Array.prototype.Has = function (arr) {
     return this.some((coord) => {
@@ -13,20 +18,18 @@ const hasProto = () => {
 };
 hasProto();
 
-const shipArray = [];
-const shipLengths = [1, 1, 2, 4, 3];
 shipLengths.forEach((length) => {
   shipArray.push(ship(length));
 });
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const available = gameBoard.available(shipArray[0], formXval, formYval);
+  if (available) {
+    gameBoard.placeShips(shipArray[0], formXval, formYval);
+  }
+});
+while (shipArray.length) {}
 
-while (shipArray.length) {
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    gameBoard.placeShips(shipArray[0], formX, formY);
-  });
-}
-
-const gameBoard = new GameBoard();
 function createCell(x, y, status) {
   const cell = document.createElement("div");
   cell.setAttribute("data-x", x);
