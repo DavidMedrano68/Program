@@ -2,10 +2,8 @@ import GameBoard from "./gameBoard.js";
 import { ship } from "./ship.js";
 const grid = document.querySelector(".grid");
 const form = document.querySelector("form");
-const formXval = document.querySelector(".formX").value;
-const formYval = document.querySelector(".formY").value;
-const formX = document.querySelector("formX");
-const formY = document.querySelector("formY");
+const formXval = document.querySelector(".xCord").value;
+const formYval = document.querySelector(".yCord").value;
 const gameBoard = new GameBoard();
 const shipArray = [];
 const shipLengths = [1, 1, 2, 4, 3];
@@ -25,10 +23,15 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
   const available = gameBoard.available(shipArray[0], formXval, formYval);
   if (available) {
-    gameBoard.placeShips(shipArray[0], formXval, formYval);
+     const shipCoords= gameBoard.placeShips(shipArray[0], formXval, formYval);
+     shipCoords.forEach(ship=>{
+      drawShips(ship[0],ship[1])
+     })
+     shipArray.shift()
+  }else{
+    return
   }
 });
-while (shipArray.length) {}
 
 function createCell(x, y, status) {
   const cell = document.createElement("div");
@@ -55,4 +58,8 @@ for (let i = 0; i < 100; i++) {
     x++;
   }
   grid.appendChild(createCell(x, y, null));
+}
+function drawShips(y,x){
+  const ship = document.querySelector(`[data-y="${y}"][data-x="${x}"]`);
+  ship.style.backgroundColor = "red";
 }
