@@ -1,4 +1,4 @@
-export function ship(length) {
+export function ship(length, color) {
   let hitCount = 0;
   function hit() {
     hitCount++;
@@ -14,5 +14,6 @@ export function ship(length) {
     length,
     hit,
     isSunk,
+    color,
   };
 }

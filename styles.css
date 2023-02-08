@@ -1,26 +1,31 @@
-*{
-    margin: 0;
-    padding: none;
+* {
+  margin: 0;
+  padding: none;
 }
-body{
-    height: 100vh; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.grid{
-    border: 2px black solid;
-    display: grid;
-    grid-template-columns: repeat(10,1fr);
-    grid-template-rows: repeat(10,1fr);
+.grid {
+  border: 2px black solid;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
 }
-#cell{
-   
-    width: 20px;
-    height: 20px;
-    border:solid .5px;
+.enemyGrid {
+  border: 2px black solid;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
 }
-.form{
-    display: grid;
-    grid-template-rows: 1fr, 1fr;
+#cell {
+  width: 20px;
+  height: 20px;
+  border: solid 0.5px;
+}
+.form {
+  display: grid;
+  grid-template-rows: 1fr, 1fr;
 }

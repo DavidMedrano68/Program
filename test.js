@@ -1,0 +1,14 @@
+import GameBoard from "./gameBoard.js";
+import { ship } from "./ship.js";
+import Player from "./player.js";
+const board = new GameBoard();
+const boardAI = new GameBoard();
+const player1 = new Player(board);
+board.placeShips(ship1, 2, 6);
+boardAI.placeShips(ship1, 3, 4);
+player1.attack(6, 2);
+player1.attack(6, 3);
+player1.attack(6, 4);
+console.log(board.checkPlacedShips());
+console.log(board.allShipsSunk());
+console.log(boardAI.allShipsSunk());

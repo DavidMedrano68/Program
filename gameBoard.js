@@ -1,3 +1,4 @@
+import { randomCoord } from "./help/funcs.js";
 export default class GameBoard {
   constructor(board, placeShips = []) {
     this.board =
@@ -30,12 +31,19 @@ export default class GameBoard {
       for (let i = 0; i < ship.length; i++) {
         const [y, x] = this.coords(desiredX, desiredY, i);
         this.board[y][x] = { ship };
-        this.placeShips.push([y][x]);
-        shipCoords.push([y][x]);
+        shipCoords.push([y, x]);
       }
+      this.placedShips.push(ship);
       return shipCoords;
     } else {
       return false;
+    }
+  }
+  autoPlaceShip(ship) {
+    const [y, x] = randomCoord();
+    const placed = this.placeShips(ship, x, y);
+    if (placed == false) {
+      this.autoPlaceShips(ship);
     }
   }
   recieveAttack(y, x) {
@@ -48,7 +56,7 @@ export default class GameBoard {
     if (this.board[y][x] == null) {
       this.missedAttacks.push([y, x]);
       this.board[y][x] = "-";
-      return true;
+      return "missed";
     } else if (this.board[y][x].ship) {
       this.board[y][x].ship.hit();
       this.board[y][x] = "X";
@@ -57,7 +65,7 @@ export default class GameBoard {
     return undefined;
   }
   allShipsSunk() {
-    this.placeShips.every((ship) => ship.isSunk());
+    return this.placedShips.every((ship) => ship.isSunk());
   }
   missedAttacks() {
     return this.missedAttacks;
@@ -69,6 +77,6 @@ export default class GameBoard {
     return this.board;
   }
   checkPlacedShips() {
-    return this.placeShips;
+    return this.placedShips;
   }
 }
