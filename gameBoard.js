@@ -39,7 +39,7 @@ export default class GameBoard {
       return false;
     }
   }
-  autoPlaceShip(ship) {
+  autoPlaceShips(ship) {
     const [y, x] = randomCoord();
     const placed = this.placeShips(ship, x, y);
     if (placed == false) {

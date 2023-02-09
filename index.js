@@ -54,6 +54,53 @@ form.addEventListener("submit", (e) => {
   checkShipArr();
 });
 
+//checks ships array
+function checkShipArr() {
+  if (!shipArray.length) {
+    form.remove();
+    const enemyGrid = document.createElement("div");
+    enemyGrid.classList = "enemyGrid";
+    createGrid(enemyGrid);
+
+    body.appendChild(enemyGrid);
+    while (enemyShipArray.length) {
+      enemyGameboard.autoPlaceShips(enemyShipArray[0]);
+      enemyShipArray.shift();
+    }
+    console.log(enemyGameboard.checkBoard());
+    //should put event listeners after the enemys ships have been placed
+    deployEventListeners();
+  }
+}
+
+function drawShips(y, x, shipColor) {
+  const ship = document.querySelector(`[data-y="${y}"][data-x="${x}"]`);
+  ship.style.backgroundColor = shipColor;
+}
+// loop to show the form until all ships have been placed
+// remove form and add two of the grids with the grids already placed
+createGrid(grid);
+
+//function if the attack is doable we check if the game has ended if not we let the computer take a turn
+// while (!gameBoard.allShipsSunk() || enemyGameboard.allShipsSunk) {
+//   deployEventListeners();
+// }
+
+//event listeners that are deployed after the player has placed all ships
+function deployEventListeners() {
+  const playableCells = document.querySelectorAll(".enemyGrid > .null");
+  playableCells.forEach((cell) => {
+    cell.addEventListener("click", (e) => {
+      display(player1.attack(e.target.dataset.y, e.target.dataset.x), e);
+    });
+  });
+}
+
+//create event listeners to accept clicks as moves after the player is done placing ships
+
+//create loop of some kind to accept the click as attack check if its doable
+// and check if the game ended if it didnt let computer attack
+
 function createCell(x, y, status) {
   const cell = document.createElement("div");
   cell.setAttribute("data-x", x);
@@ -77,53 +124,22 @@ function createGrid(playerForm) {
     playerForm.appendChild(createCell(x, y, null));
   }
 }
-//checks ships array
-function checkShipArr() {
-  if (!shipArray.length) {
-    form.remove();
-    const enemyGrid = document.createElement("div");
-    enemyGrid.classList = "enemyGrid";
-    createGrid(enemyGrid);
-
-    body.appendChild(enemyGrid);
-    while (enemyShipArray.length) {
-      enemyGameboard.autoPlaceShip(enemyShipArray[0]);
-      enemyShipArray.shift();
+function display(attack, e) {
+  if (attack) {
+    e.target.removeAttribute("style");
+    e.target.classList = "hit";
+  }
+  if (attack == "missed") {
+    e.target.classList = "missed";
+  }
+  if (attack == true || attack == "missed") {
+    const enemyAttack = player2.generateAttack();
+    if (enemyAttack) {
+      e.target.removeAttribute("style");
+      e.target.classList = "hit";
     }
-    //should put event listeners after the enemys ships have been placed
+    if (enemyAttack == "missed") {
+      e.target.classList = "missed";
+    }
   }
 }
-
-function drawShips(y, x, shipColor) {
-  const ship = document.querySelector(`[data-y="${y}"][data-x="${x}"]`);
-  ship.style.backgroundColor = shipColor;
-}
-// loop to show the form until all ships have been placed
-// remove form and add two of the grids with the grids already placed
-createGrid(grid);
-//function if the attack is doable we check if the game has ended if not we let the computer take a turn
-// while (!gameBoard.allShipsSunk() || enemyGameboard.allShipsSunk) {
-//   deployEventListeners();
-// }
-
-//event listeners that are deployed after the player has placed all ships
-function deployEventListeners() {
-  const playableCells = document.querySelectorAll(".enemyGrid > .null");
-  playableCells.forEach((cell) => {
-    cell.addEventListener("click", (e) => {
-      const attack = player1.attack(e.target.dataset.y, e.target.dataset.x);
-      //if the attack is successfull change the elements class to hit
-      if (attack) {
-        e.target.classList = "hit";
-      }
-      if (attack == "missed") {
-        e.target.classList = "missed";
-      }
-    });
-  });
-}
-
-//create event listeners to accept clicks as moves after the player is done placing ships
-
-//create loop of some kind to accept the click as attack check if its doable
-// and check if the game ended if it didnt let computer attack

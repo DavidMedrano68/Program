@@ -29,3 +29,9 @@ body {
   display: grid;
   grid-template-rows: 1fr, 1fr;
 }
+.hit {
+  background: beige;
+}
+.missed {
+  background: black;
+}
