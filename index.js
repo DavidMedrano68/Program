@@ -176,6 +176,13 @@ function display(attack, e) {
       console.log("game Over");
     } else {
       const enemyAttack = player2.generateAttack();
+      enemyMessage.textContent = ''
+      if(enemyAttack == "missed"){
+        enemyMessage.textContent = 'your opponent has missed'
+      }
+      if(enemyAttack == true){
+        enemyMessage.textContent = 'your opponent has landed and attack'
+      }
       if (enemyAttack == true || enemyAttack == "missed") {
         const [y, x] = player2.getMoves().at(-1);
         markOnBoard(y, x, enemyAttack);

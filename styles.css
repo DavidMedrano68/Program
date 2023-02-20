@@ -7,6 +7,7 @@ body {
   display: grid;
   justify-content: center;
   align-items: center;
+  grid-template-rows: 1fr 5fr 1fr;
 }
 .grid {
   border: 2px black solid;
@@ -26,6 +27,8 @@ body {
 .form {
   display: grid;
   grid-template-rows: 1fr, 1fr;
+  grid-column: span 2;
+  grid-row: span 2;
 }
 .hit {
   background: beige;
@@ -65,4 +68,19 @@ body {
 }
 label{
   text-align: center;
+}
+.playerMessage .enemyMessage{
+  text-align: center;
+}
+h1{
+  text-align: center;
+}
+input[type="submit"]{
+  width: min-content;
+  height: min-content;
+  justify-self: center;
+}
+footer{
+  text-align: center;
+  align-self: end;
 }
