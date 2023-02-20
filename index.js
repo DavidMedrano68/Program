@@ -7,6 +7,9 @@ const formXval = document.querySelector(".xCord");
 const formYval = document.querySelector(".yCord");
 const playerSide = document.querySelector(".player");
 const enemySide = document.querySelector(".enemy");
+const playerMessage = document.querySelector('.playerMessage')
+const enemyMessage = document.querySelector('.enemyMessage')
+
 const gameBoard = new GameBoard();
 const enemyGameboard = new GameBoard();
 const player1 = new Player(enemyGameboard);
@@ -155,16 +158,19 @@ function createGrid(playerGrid, parent) {
   parent.appendChild(seperationDiv);
   parent.appendChild(horNums);
 }
+//reverse the player side message
 function display(attack, e) {
+  playerMessage.textContent = ''
   if (attack) {
     e.target.removeAttribute("style");
     e.target.classList = "hit";
+    playerMessage.textContent = 'you have landed an atttack'
   }
   if (attack == "missed") {
     e.target.classList = "missed";
+    playerMessage.textContent = 'you have missed an attack'
   }
   if (attack == true || attack == "missed") {
-    // we are populating the wrong grid populate the grid at the given coordinates
     if (allShipsSunk(gameBoard, enemyGameboard)) {
       deleteGrid();
       console.log("game Over");
@@ -182,8 +188,9 @@ function display(attack, e) {
   }
 }
 function deleteGrid() {
-  grid.remove();
-  document.querySelector(".enemyGrid").remove();
+ enemySide.remove()
+ playerSide.remove()
+ console.log('gameOver')
 }
 function allShipsSunk(playerBoard, enemyBoard) {
   if (playerBoard.allShipsSunk() || enemyBoard.allShipsSunk()) {
