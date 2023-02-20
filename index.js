@@ -5,7 +5,8 @@ const grid = document.querySelector(".grid");
 const form = document.querySelector("form");
 const formXval = document.querySelector(".xCord");
 const formYval = document.querySelector(".yCord");
-const body = document.querySelector("body");
+const playerSide = document.querySelector(".player");
+const enemySide = document.querySelector(".enemy");
 const gameBoard = new GameBoard();
 const enemyGameboard = new GameBoard();
 const player1 = new Player(enemyGameboard);
@@ -60,14 +61,13 @@ function checkShipArr() {
     form.remove();
     const enemyGrid = document.createElement("div");
     enemyGrid.classList = "enemyGrid";
-    createGrid(enemyGrid);
+    enemySide.appendChild(enemyGrid);
+    createGrid(enemyGrid, enemySide);
 
-    body.appendChild(enemyGrid);
     while (enemyShipArray.length) {
       enemyGameboard.autoPlaceShips(enemyShipArray[0]);
       enemyShipArray.shift();
     }
-    console.log(enemyGameboard.checkBoard());
     //should put event listeners after the enemys ships have been placed
     deployEventListeners();
   }
@@ -77,9 +77,19 @@ function drawShips(y, x, shipColor) {
   const ship = document.querySelector(`[data-y="${y}"][data-x="${x}"]`);
   ship.style.backgroundColor = shipColor;
 }
+function markOnBoard(y, x, status) {
+  const cell = document.querySelector(`.grid > [data-y="${y}"][data-x="${x}"]`);
+  if (status) {
+    cell.removeAttribute("style");
+    cell.classList = "hit";
+  }
+  if (status == "missed") {
+    cell.classList = "missed";
+  }
+}
 // loop to show the form until all ships have been placed
 // remove form and add two of the grids with the grids already placed
-createGrid(grid);
+createGrid(grid, playerSide);
 
 //function if the attack is doable we check if the game has ended if not we let the computer take a turn
 // while (!gameBoard.allShipsSunk() || enemyGameboard.allShipsSunk) {
@@ -89,6 +99,7 @@ createGrid(grid);
 //event listeners that are deployed after the player has placed all ships
 function deployEventListeners() {
   const playableCells = document.querySelectorAll(".enemyGrid > .null");
+  console.log(enemyGameboard.checkBoard());
   playableCells.forEach((cell) => {
     cell.addEventListener("click", (e) => {
       display(player1.attack(e.target.dataset.y, e.target.dataset.x), e);
@@ -109,7 +120,7 @@ function createCell(x, y, status) {
   cell.className = status;
   return cell;
 }
-function createGrid(playerForm) {
+function createGrid(playerGrid, parent) {
   let x = 0;
   let y = 9;
   for (let i = 0; i < 100; i++) {
@@ -121,8 +132,28 @@ function createGrid(playerForm) {
     } else {
       x++;
     }
-    playerForm.appendChild(createCell(x, y, null));
+    playerGrid.appendChild(createCell(x, y, null));
   }
+  const vertNums = createElem("div", "numbers");
+  const horNums = createElem("div", "horNumbers");
+  let number = 9;
+  let horNumber = 0;
+  for (let i = 0; i != 10; i++) {
+    const num = document.createElement("div");
+    num.innerText = number;
+    vertNums.appendChild(num);
+    number--;
+  }
+  for (let i = 0; i != 10; i++) {
+    const Hor = document.createElement("div");
+    Hor.innerText = horNumber;
+    horNums.appendChild(Hor);
+    horNumber++;
+  }
+  const seperationDiv = document.createElement("div");
+  parent.insertBefore(vertNums, playerGrid);
+  parent.appendChild(seperationDiv);
+  parent.appendChild(horNums);
 }
 function display(attack, e) {
   if (attack) {
@@ -133,13 +164,35 @@ function display(attack, e) {
     e.target.classList = "missed";
   }
   if (attack == true || attack == "missed") {
-    const enemyAttack = player2.generateAttack();
-    if (enemyAttack) {
-      e.target.removeAttribute("style");
-      e.target.classList = "hit";
-    }
-    if (enemyAttack == "missed") {
-      e.target.classList = "missed";
+    // we are populating the wrong grid populate the grid at the given coordinates
+    if (allShipsSunk(gameBoard, enemyGameboard)) {
+      deleteGrid();
+      console.log("game Over");
+    } else {
+      const enemyAttack = player2.generateAttack();
+      if (enemyAttack == true || enemyAttack == "missed") {
+        const [y, x] = player2.getMoves().at(-1);
+        markOnBoard(y, x, enemyAttack);
+        if (allShipsSunk(gameBoard, enemyGameboard)) {
+          deleteGrid();
+          console.log("gameover");
+        }
+      }
     }
   }
+}
+function deleteGrid() {
+  grid.remove();
+  document.querySelector(".enemyGrid").remove();
+}
+function allShipsSunk(playerBoard, enemyBoard) {
+  if (playerBoard.allShipsSunk() || enemyBoard.allShipsSunk()) {
+    return true;
+  }
+  return false;
+}
+function createElem(type, id) {
+  const elem = document.createElement(type);
+  elem.classList = id;
+  return elem;
 }

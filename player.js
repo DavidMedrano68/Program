@@ -9,15 +9,17 @@ export default class Player {
   generateAttack() {
     const [y, x] = randomCoord();
     if (this.validatePlay([y, x])) {
-      this.generateAttack();
+      return this.generateAttack();
     }
+    const response = this.gameBoard.recieveAttack(y, x);
+    if (response == undefined) {
+      return this.generateAttack();
+    }
+    console.log(response);
     this.moves.push([y, x]);
-    return this.gameBoard.recieveAttack(y, x);
+    return response;
   }
   attack(y, x) {
-    if (this.validatePlay([y, x])) {
-      return undefined;
-    }
     this.moves.push([y, x]);
     return this.gameBoard.recieveAttack(y, x);
   }

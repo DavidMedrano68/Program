@@ -1,14 +1,8 @@
-import GameBoard from "./gameBoard.js";
-import { ship } from "./ship.js";
-import Player from "./player.js";
-const board = new GameBoard();
-const boardAI = new GameBoard();
-const player1 = new Player(board);
-board.placeShips(ship1, 2, 6);
-boardAI.placeShips(ship1, 3, 4);
-player1.attack(6, 2);
-player1.attack(6, 3);
-player1.attack(6, 4);
-console.log(board.checkPlacedShips());
-console.log(board.allShipsSunk());
-console.log(boardAI.allShipsSunk());
+function randomCoord(min = 0, max = 10) {
+  const y = Math.floor(Math.random() * (max - min)) + min;
+  const x = Math.floor(Math.random() * (max - min)) + min;
+  return [y, x];
+}
+for (let i = 0; i < 20; i++) {
+  console.log(randomCoord());
+}
