@@ -4,7 +4,8 @@
 }
 body {
   height: 100vh;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   justify-content: center;
   align-items: center;
 }
@@ -21,17 +22,38 @@ body {
   grid-template-rows: repeat(10, 1fr);
 }
 #cell {
-  width: 20px;
-  height: 20px;
   border: solid 0.5px;
 }
 .form {
   display: grid;
   grid-template-rows: 1fr, 1fr;
 }
-.hit{
+.hit {
   background: beige;
 }
-.missed{
+.missed {
   background: black;
+}
+.player {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  grid-template-rows: 5fr 1fr;
+}
+.numbers {
+  font-size: larger;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end;
+}
+.horNumbers {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  font-size: larger;
+  justify-items: center;
+}
+.enemy {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  grid-template-rows: 5fr 1fr;
 }
